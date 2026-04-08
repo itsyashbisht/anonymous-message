@@ -98,7 +98,7 @@ export async function POST(request: Request) {
       },
     );
   } catch (error) {
-    console.log("Error registering user", error.message);
+    console.log("Error registering user", error);
     return Response.json(
       {
         success: false,
