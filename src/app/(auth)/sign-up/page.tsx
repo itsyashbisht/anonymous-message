@@ -23,7 +23,7 @@ import Link from "next/link";
 
 export default function Page() {
   const [username, setUsername] = useState("");
-  const [usernameMesasge, setUsernameMesasge] = useState("");
+  const [usernameMessage, setUsernameMessage] = useState("");
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -41,20 +41,20 @@ export default function Page() {
   });
 
   useEffect(() => {
-    const checkUsernameUqiueness = async () => {
+    const checkUsernameUniqueness = async () => {
       if (username) {
         setIsCheckingUsername(true);
-        setUsernameMesasge("");
+        setUsernameMessage("");
         try {
           const response = await axios.get(
             `/api/check-username-unique?username=${username}`,
           );
 
-          setUsernameMesasge(response.data.message);
+          setUsernameMessage(response.data.message);
         } catch (error) {
-          const axiosErrror = error as AxiosError<ApiResponse>;
-          setUsernameMesasge(
-            axiosErrror.response?.data?.message ??
+          const axiosError = error as AxiosError<ApiResponse>;
+          setUsernameMessage(
+            axiosError.response?.data?.message ??
               "Error checking username uniqueness",
           );
         } finally {
@@ -62,7 +62,7 @@ export default function Page() {
         }
       }
     };
-    checkUsernameUqiueness();
+    checkUsernameUniqueness();
   }, [username]);
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
@@ -74,9 +74,9 @@ export default function Page() {
       setIsSubmitting(false);
     } catch (error) {
       console.log("Error in signing up user", error);
-      const axiosErrror = error as AxiosError<ApiResponse>;
+      const axiosError = error as AxiosError<ApiResponse>;
       let errorMessage =
-        axiosErrror.response?.data?.message ?? "Error is signing up user";
+        axiosError.response?.data?.message ?? "Error is signing up user";
       toast.error(errorMessage);
       setIsSubmitting(false);
     }
@@ -92,7 +92,7 @@ export default function Page() {
           <p className="mb-4">Sign up to start your anonymous adventure</p>
         </div>
 
-        <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
               name="username"
@@ -118,9 +118,9 @@ export default function Page() {
                     <Loader2 className="animate-spin" />
                   )}
                   <p
-                    className={`text-xs ${usernameMesasge === "Username is available" ? "text-green-400" : "text-red-400"}  `}
+                    className={`text-xs ${usernameMessage === "Username is available" ? "text-green-400" : "text-red-400"}  `}
                   >
-                    {usernameMesasge}
+                    {usernameMessage}
                   </p>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -178,20 +178,27 @@ export default function Page() {
             />
           </FieldGroup>
 
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
-              </>
-            ) : (
-              "Signup"
-            )}
-          </Button>
+          <div className="flex justify-center">
+            <Button
+              className="my-2"
+              size="lg"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+                </>
+              ) : (
+                "Signup"
+              )}
+            </Button>
+          </div>
         </form>
 
         <div className="text-center mt-4">
           <p>
-            Already a memeber?{" "}
+            Already a member?{" "}
             <Link href="/sign-in" className="text-blue-600">
               Sign in
             </Link>
