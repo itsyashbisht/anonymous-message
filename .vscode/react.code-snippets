@@ -1,0 +1,12 @@
+{
+  "React Functional Component (default export)": {
+    "scope": "javascriptreact,typescriptreact",
+    "prefix": "rfc",
+    "description": "Create a default exported React functional component named from the file name",
+    "body": [
+      "export default function ${1:${TM_FILENAME_BASE/(^|[-_\\\\s])(\\\\w)/${2:/upcase}/g}}() {",
+      "  return <div>${1}</div>;",
+      "}"
+    ]
+  }
+}
