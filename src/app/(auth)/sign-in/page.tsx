@@ -122,7 +122,7 @@ export default function Page() {
         <div className="text-center mt-4">
           <p>
             Be a member?{" "}
-            <Link href="/sign-in" className="text-blue-600">
+            <Link href="/sign-up" className="text-blue-600">
               Sign up
             </Link>
           </p>
